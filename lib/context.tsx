@@ -30,22 +30,54 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [registrations, setRegistrations] = useState<Registration[]>([]);
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  // Initialize from localStorage on mount
-  useEffect(() => {
+  // Initialize state from localStorage immediately
+  const [programs, setPrograms] = useState<Program[]>(() => {
+    if (typeof window === 'undefined') return [];
     storage.initializeStorage();
-    setPrograms(storage.getPrograms());
-    setCurrentUser(storage.getCurrentUser());
-    setRegistrations(storage.getRegistrations());
-    setSubscriptions(storage.getSubscriptions());
-    setIsHydrated(true);
-  }, []);
+    return storage.getPrograms();
+  });
+  
+  const [currentUser, setCurrentUser] = useState<User | null>(() => {
+    if (typeof window === 'undefined') return null;
+    return storage.getCurrentUser();
+  });
+  
+  const [registrations, setRegistrations] = useState<Registration[]>(() => {
+    if (typeof window === 'undefined') return [];
+    return storage.getRegistrations();
+  });
+  
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>(() => {
+    if (typeof window === 'undefined') return [];
+    return storage.getSubscriptions();
+  });
+  
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  // Sync to localStorage whenever state changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      storage.savePrograms(programs);
+    }
+  }, [programs]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      storage.setCurrentUser(currentUser);
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      storage.saveRegistrations(registrations);
+    }
+  }, [registrations]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      storage.saveSubscriptions(subscriptions);
+    }
+  }, [subscriptions]);
 
   const addProgram = (program: Omit<Program, 'id' | 'createdAt' | 'updatedAt'>) => {
     const newProgram = storage.addProgram(program);
