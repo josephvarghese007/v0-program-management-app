@@ -39,7 +39,7 @@ export const viewport: Viewport = {
   ],
 }
 
-import { AppProvider } from '@/lib/context'
+import { ClientProvider } from '@/components/ClientProvider'
 
 export default function RootLayout({
   children,
@@ -49,9 +49,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        <AppProvider>
+        <ClientProvider>
           {children}
-        </AppProvider>
+        </ClientProvider>
         <Analytics />
       </body>
     </html>
