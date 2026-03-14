@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Program } from '@/lib/types';
 
 interface HeroSectionProps {
@@ -8,6 +8,12 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ upcomingPrograms, onTabChange, currentUser }: HeroSectionProps) {
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   return (
     <div className="relative overflow-hidden rounded-2xl mb-8 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 border border-orange-100 p-0">
       {/* Decorative background elements */}
@@ -42,22 +48,37 @@ export function HeroSection({ upcomingPrograms, onTabChange, currentUser }: Hero
           </div>
 
           {/* Right stats */}
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { icon: '🙏', label: 'Daily Prayers', count: upcomingPrograms.filter(p => p.category === 'daily').length },
-              { icon: '📅', label: 'Weekly Events', count: upcomingPrograms.filter(p => p.category === 'weekly').length },
-              { icon: '🎉', label: 'Monthly Meets', count: upcomingPrograms.filter(p => p.category === 'monthly').length },
-            ].map((stat, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-xl p-5 border border-orange-100 hover:shadow-md transition-shadow text-center"
-              >
-                <div className="text-3xl mb-2">{stat.icon}</div>
-                <div className="text-2xl font-bold text-primary mb-1">{stat.count}</div>
-                <div className="text-xs text-muted-foreground font-medium">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+          {isHydrated ? (
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { icon: '🙏', label: 'Daily Prayers', count: upcomingPrograms.filter(p => p.category === 'daily').length },
+                { icon: '📅', label: 'Weekly Events', count: upcomingPrograms.filter(p => p.category === 'weekly').length },
+                { icon: '🎉', label: 'Monthly Meets', count: upcomingPrograms.filter(p => p.category === 'monthly').length },
+              ].map((stat, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-xl p-5 border border-orange-100 hover:shadow-md transition-shadow text-center"
+                >
+                  <div className="text-3xl mb-2">{stat.icon}</div>
+                  <div className="text-2xl font-bold text-primary mb-1">{stat.count}</div>
+                  <div className="text-xs text-muted-foreground font-medium">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-4">
+              {[0, 1, 2].map((idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-xl p-5 border border-orange-100 text-center"
+                >
+                  <div className="text-3xl mb-2">-</div>
+                  <div className="text-2xl font-bold text-primary mb-1">0</div>
+                  <div className="text-xs text-muted-foreground font-medium">Loading...</div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

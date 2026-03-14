@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useApp } from '@/lib/context';
 import { Program } from '@/lib/types';
 import { ProgramList } from '@/components/ProgramList';
@@ -36,6 +36,11 @@ export default function Home() {
   const [addCategory, setAddCategory] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const [editingProgram, setEditingProgram] = useState<Program | null>(null);
   const [toast, setToast] = useState('');
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const showToast = (msg: string) => {
     setToast(msg);
