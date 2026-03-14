@@ -153,10 +153,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  if (!isHydrated) {
-    return <>{children}</>;
-  }
-
   return (
     <AppContext.Provider
       value={{
