@@ -24,112 +24,117 @@ export function ProgramCard({
   const { currentUser } = useApp();
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 hover:shadow-md transition-shadow">
-      <div className="flex gap-4">
-        {/* Icon */}
-        <div className="text-3xl flex-shrink-0">{program.icon}</div>
+    <div className="bg-card rounded-xl border border-border p-6 hover:shadow-lg transition-all duration-300 hover:border-primary/30 group">
+      <div className="flex gap-4 items-start">
+        {/* Icon with background */}
+        <div className="text-5xl p-3 bg-gradient-to-br from-accent/20 to-primary/10 rounded-xl flex-shrink-0 group-hover:scale-110 transition-transform">
+          {program.icon}
+        </div>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 truncate">{program.title}</h3>
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <div className="flex-1">
+              <h3 className="font-bold text-lg text-foreground">{program.title}</h3>
+              {program.category && (
+                <span className="inline-block text-xs font-semibold text-primary bg-primary/10 px-3 py-1 rounded-full mt-1.5">
+                  {program.category === 'daily' && '🙏 Daily'}
+                  {program.category === 'weekly' && '📅 Weekly'}
+                  {program.category === 'monthly' && '🎉 Monthly'}
+                </span>
+              )}
+            </div>
+            {isAdmin && (
+              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                {onEdit && (
+                  <button
+                    onClick={() => onEdit(program)}
+                    className="p-2 hover:bg-primary/10 rounded-lg transition text-primary"
+                    title="Edit"
+                  >
+                    ✏️
+                  </button>
+                )}
+                {onDelete && (
+                  <button
+                    onClick={() => onDelete(program.id)}
+                    className="p-2 hover:bg-destructive/10 rounded-lg transition text-destructive"
+                    title="Delete"
+                  >
+                    🗑️
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
 
           {program.description && (
-            <p className="text-sm text-gray-600 mt-1 line-clamp-2">{program.description}</p>
+            <p className="text-sm text-muted-foreground mb-3 leading-relaxed line-clamp-2">{program.description}</p>
           )}
 
-          {/* Details */}
-          <div className="mt-2 space-y-1 text-sm text-gray-600">
+          {/* Details Grid */}
+          <div className="space-y-2 mb-4 text-sm">
             {program.time && (
-              <div className="flex items-center gap-2">
-                <span className="text-base">🕐</span>
-                <span>{program.time}</span>
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <span className="text-lg">🕐</span>
+                <span className="font-medium">{program.time}</span>
               </div>
             )}
 
-            {program.day && (
-              <div className="flex items-center gap-2">
-                <span className="text-base">📆</span>
-                <span>{program.day}</span>
-              </div>
-            )}
-
-            {program.occurrence && (
-              <div className="flex items-center gap-2">
-                <span className="text-base">📅</span>
-                <span>{program.occurrence}</span>
+            {(program.day || program.occurrence) && (
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <span className="text-lg">📆</span>
+                <span>{program.day || program.occurrence}</span>
               </div>
             )}
 
             {program.venue && (
-              <div className="flex items-center gap-2">
-                <span className="text-base">📍</span>
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <span className="text-lg">📍</span>
                 <span className="truncate">{program.venue}</span>
               </div>
             )}
 
             {program.platform && (
-              <div className="flex items-center gap-2">
-                <span className="text-base">💻</span>
-                <span>{program.platform}</span>
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <span className="text-lg">💻</span>
+                <span className="font-medium">{program.platform}</span>
               </div>
             )}
 
             {program.note && (
-              <div className="mt-2 inline-block bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium">
+              <div className="mt-2 inline-block bg-accent/10 text-accent px-3 py-1.5 rounded-lg text-xs font-semibold">
                 {program.note}
               </div>
             )}
           </div>
-        </div>
 
-        {/* Actions */}
-        <div className="flex flex-col gap-2 flex-shrink-0">
-          {program.link && (
-            <a
-              href={program.link}
-              target="_blank"
-              rel="noreferrer"
-              className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition text-center"
-            >
-              Join
-            </a>
-          )}
+          {/* Action Buttons */}
+          <div className="flex gap-3 pt-4 border-t border-border">
+            {program.link && (
+              <a
+                href={program.link}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 px-4 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-lg hover:shadow-md transition-all hover:scale-105 active:scale-95 text-center"
+              >
+                Join Online
+              </a>
+            )}
 
-          {currentUser && onToggleRegistration && (
-            <button
-              onClick={onToggleRegistration}
-              className={`px-3 py-1 text-sm rounded transition text-center ${
-                isRegistered
-                  ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {isRegistered ? '✓ Registered' : 'Register'}
-            </button>
-          )}
-
-          {isAdmin && (
-            <div className="flex gap-1">
-              {onEdit && (
-                <button
-                  onClick={() => onEdit(program)}
-                  className="px-2 py-1 text-sm bg-yellow-50 text-yellow-700 rounded hover:bg-yellow-100 transition"
-                  title="Edit"
-                >
-                  ✏️
-                </button>
-              )}
-              {onDelete && (
-                <button
-                  onClick={() => onDelete(program.id)}
-                  className="px-2 py-1 text-sm bg-red-50 text-red-700 rounded hover:bg-red-100 transition"
-                  title="Delete"
-                >
-                  🗑️
-                </button>
-              )}
-            </div>
-          )}
+            {currentUser && onToggleRegistration && !isAdmin && (
+              <button
+                onClick={onToggleRegistration}
+                className={`flex-1 px-4 py-2.5 text-sm font-semibold rounded-lg transition-all duration-300 ${
+                  isRegistered
+                    ? 'bg-destructive/10 text-destructive hover:bg-destructive/20'
+                    : 'bg-secondary text-secondary-foreground hover:shadow-md'
+                }`}
+              >
+                {isRegistered ? '✓ Registered' : 'Register'}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
