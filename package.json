@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "npm run typecheck",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm run build",
+    "verify:local": "bash scripts/verify-local.sh",
+    "deploy:vps": "bash scripts/deploy-vps.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

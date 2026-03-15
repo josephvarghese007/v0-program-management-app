@@ -1,11 +1,13 @@
 import React from 'react';
 
+type NavigationTab = 'home' | 'daily' | 'weekly' | 'monthly' | 'calendar';
+
 interface TabNavigationProps {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
+  activeTab: NavigationTab;
+  onTabChange: (tab: NavigationTab) => void;
 }
 
-const tabs = [
+const tabs: { id: NavigationTab; label: string; icon: string }[] = [
   { id: 'home', label: 'Home', icon: '🏠' },
   { id: 'daily', label: 'Daily Prayers', icon: '🙏' },
   { id: 'weekly', label: 'Weekly', icon: '📅' },

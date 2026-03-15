@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useApp } from '@/lib/context';
+import { Subscription } from '@/lib/types';
 
 export function NotificationPreferences() {
   const { currentUser, updateSubscription } = useApp();
-  const [preferences, setPreferences] = useState({
+  const [preferences, setPreferences] = useState<Pick<Subscription, 'programCategory' | 'enableEmail' | 'enableSMS'>>({
     programCategory: 'all',
     enableEmail: true,
     enableSMS: false,
@@ -21,7 +22,7 @@ export function NotificationPreferences() {
     }
   }, [currentUser]);
 
-  const handleUpdate = (field: string, value: any) => {
+  const handleUpdate = <K extends keyof typeof preferences>(field: K, value: (typeof preferences)[K]) => {
     const updated = { ...preferences, [field]: value };
     setPreferences(updated);
     
@@ -53,7 +54,7 @@ export function NotificationPreferences() {
           </label>
           <select
             value={preferences.programCategory}
-            onChange={(e) => handleUpdate('programCategory', e.target.value)}
+            onChange={(e) => handleUpdate('programCategory', e.target.value as Subscription['programCategory'])}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="all">All Programs</option>

@@ -24,18 +24,45 @@ A modern web application for managing and discovering Jesus Youth community prog
 ### Installation
 
 ```bash
-# Install dependencies
+# 1) Clone
+git clone <your-repo-url>
+cd v0-program-management-app
+
+# 2) Install dependencies
 npm install
 
-# Start development server
+# 3) Configure environment
+cp .env.example .env.local
+
+# 4) Start development server
 npm run dev
 ```
 
-The app will be available at `http://localhost:3000`
+The app will be available at `http://localhost:3000`.
 
 ### Environment Setup
 
-No environment variables required for basic functionality. The app uses localStorage for data persistence.
+Use `.env.example` as a template.
+
+```bash
+cp .env.example .env.local
+```
+
+- `NEXT_PUBLIC_ADMIN_PASSWORD` - admin login password used by the app UI (defaults to `jesusyouth2024` if unset).
+
+The app uses localStorage for data persistence.
+
+## Super Simple Verification (for non-technical users)
+
+If you just want to confirm everything works:
+
+```bash
+npm run verify:local
+```
+
+This command will install dependencies, run type checks, build the app, start it, and verify `/api/health`.
+
+For full beginner instructions, see [QUICKSTART_FOR_BEGINNERS.md](./QUICKSTART_FOR_BEGINNERS.md).
 
 ## Usage
 
@@ -88,23 +115,28 @@ To reset all data, clear your browser's localStorage for this site.
 
 ## Deployment
 
-### Deploy to Vercel (Recommended)
+### Option A: Docker (recommended for VPS)
 
-1. Push your code to GitHub
-2. Visit [vercel.com](https://vercel.com)
-3. Import your GitHub repository
-4. Click "Deploy"
-5. Your app will be live at `<project-name>.vercel.app`
+```bash
+cp .env.example .env
+docker compose up -d --build
+```
 
-### Deploy to Other Platforms
+- App URL: `http://<server-ip>:3000`
+- Health URL: `http://<server-ip>:3000/api/health`
 
-This is a standard Next.js application and can be deployed to any platform that supports Node.js:
-- Netlify
-- AWS
-- Google Cloud
-- Azure
-- Railway
-- etc.
+### Option B: Node.js process
+
+```bash
+npm install
+cp .env.example .env.local
+npm run build
+npm run start
+```
+
+### Full deployment playbook
+
+For GitHub-to-VPS steps, reverse proxy notes, and production checklist, see [DEPLOYMENT.md](./DEPLOYMENT.md).
 
 ## Future Enhancements
 
@@ -121,7 +153,7 @@ To add backend functionality in the future:
 
 For development/testing purposes, the default admin password is: `jesusyouth2024`
 
-**Important**: Change this password in production by updating the `ADMIN_PASSWORD` in `/lib/storage.ts`
+**Important**: Change this in production using `NEXT_PUBLIC_ADMIN_PASSWORD` in your `.env` file or deployment environment variables.
 
 ## Default Programs
 

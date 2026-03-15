@@ -6,7 +6,7 @@ const STORAGE_KEYS = {
   REGISTRATIONS: 'jy_registrations',
   SUBSCRIPTIONS: 'jy_subscriptions',
   CURRENT_USER: 'jy_current_user',
-  ADMIN_PASSWORD: 'jesusyouth2024',
+  ADMIN_PASSWORD: process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'jesusyouth2024',
 };
 
 const INITIAL_PROGRAMS: Program[] = [
