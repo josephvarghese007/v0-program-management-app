@@ -5,11 +5,11 @@ import { Program } from '@/lib/types';
 
 interface AddProgramModalProps {
   category: 'daily' | 'weekly' | 'monthly';
-  onAdd: (program: Omit<Program, 'id' | 'createdAt' | 'updatedAt'>) => void;
+  onSave: (program: Omit<Program, 'id' | 'createdAt' | 'updatedAt'>) => void;
   onClose: () => void;
 }
 
-export function AddProgramModal({ category, onAdd, onClose }: AddProgramModalProps) {
+export function AddProgramModal({ category, onSave, onClose }: AddProgramModalProps) {
   const [formData, setFormData] = useState({
     title: '',
     icon: '✨',
@@ -47,30 +47,30 @@ export function AddProgramModal({ category, onAdd, onClose }: AddProgramModalPro
         setError('Platform is required for daily programs');
         return;
       }
-      onAdd({
+      onSave({
         ...baseProgram,
         platform: formData.platform.trim(),
         link: formData.link.trim(),
         time: formData.time.trim(),
         type: 'online',
-      } as any);
+      });
     } else if (category === 'weekly') {
-      onAdd({
+      onSave({
         ...baseProgram,
         day: formData.day.trim() || 'Various',
         time: formData.time.trim(),
         venue: formData.venue.trim(),
         type: 'offline',
-      } as any);
+      });
     } else {
-      onAdd({
+      onSave({
         ...baseProgram,
         occurrence: formData.occurrence.trim() || 'Monthly',
         time: formData.time.trim(),
         venue: formData.venue.trim(),
         note: formData.note.trim() || undefined,
         type: 'offline',
-      } as any);
+      });
     }
 
     onClose();

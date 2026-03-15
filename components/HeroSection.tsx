@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Program } from '@/lib/types';
+import { Program, User } from '@/lib/types';
 
 interface HeroSectionProps {
   upcomingPrograms: Program[];
-  onTabChange: (tab: string) => void;
-  currentUser: any;
+  onTabChange: (tab: 'daily' | 'weekly' | 'monthly' | 'home' | 'calendar') => void;
+  currentUser: User | null;
 }
 
 export function HeroSection({ upcomingPrograms, onTabChange, currentUser }: HeroSectionProps) {

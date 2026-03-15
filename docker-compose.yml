@@ -1,0 +1,13 @@
+services:
+  jy-programs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jy-programs-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - NEXT_PUBLIC_ADMIN_PASSWORD=${NEXT_PUBLIC_ADMIN_PASSWORD:-jesusyouth2024}
+    restart: unless-stopped
