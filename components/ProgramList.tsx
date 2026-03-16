@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Program } from '@/lib/types';
 import { ProgramCard } from './ProgramCard';
 
@@ -27,6 +27,12 @@ export function ProgramList({
   title,
   icon,
 }: ProgramListProps) {
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   const filteredPrograms = useMemo(
     () => programs.filter((p) => p.category === category),
     [programs, category]
@@ -52,7 +58,7 @@ export function ProgramList({
       <div className="flex items-center gap-3 mb-4 pb-4 border-b">
         <span className="text-2xl">{displayIcon}</span>
         <h2 className="text-xl font-bold text-gray-900">{displayTitle}</h2>
-        {filteredPrograms.length > 0 && (
+        {isHydrated && filteredPrograms.length > 0 && (
           <span className="ml-auto bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm font-medium">
             {filteredPrograms.length}
           </span>
