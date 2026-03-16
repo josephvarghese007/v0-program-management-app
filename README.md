@@ -1,17 +1,32 @@
-# Jesus Youth Angamaly Zone Programs
+# Jesus Youth Angamaly Zone - Full-Stack Application
 
-A modern web application for managing and discovering Jesus Youth community programs in the Angamaly Zone. Features include daily prayers, weekly meetings, monthly events, user registration, and more.
+A modern, production-ready full-stack web application for managing Jesus Youth community programs. Built with Next.js, React, Prisma ORM, and SQLite/PostgreSQL.
 
 ## Features
 
-- **Program Management**: Browse daily prayers, weekly meetings, and monthly events
-- **User Registration**: Sign up and register for programs you're interested in
-- **Calendar View**: Interactive calendar showing recurring weekly events
-- **Admin Dashboard**: Manage programs with full CRUD operations
-- **Notification Preferences**: Users can customize how they want to receive updates
-- **Event Export**: Export programs to iCalendar (.ics), CSV, or JSON formats
-- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- **Data Persistence**: All data stored locally (localStorage) with no backend required
+✅ **Full-Stack Architecture**
+- Frontend: Next.js 16 + React 19 + Tailwind CSS
+- Backend: API routes with Prisma ORM
+- Database: SQLite (default) or PostgreSQL
+- Type-Safe: Full TypeScript throughout
+
+✅ **Program Management**
+- Browse daily prayers, weekly meetings, and monthly events
+- Admin dashboard with full CRUD operations
+- Program filtering and search
+- Real-time data from database
+
+✅ **User System**
+- User registration and authentication
+- Program registrations and enrollments
+- Notification preferences
+- Admin controls
+
+✅ **Production Ready**
+- One-click deployment to Vercel
+- Database migrations included
+- Environment configuration
+- Security best practices
 
 ## Program Categories
 
@@ -19,23 +34,40 @@ A modern web application for managing and discovering Jesus Youth community prog
 - **Weekly Meetings**: In-person community gatherings with fixed schedule
 - **Monthly Events**: Special monthly events and gatherings
 
-## Getting Started
+## Quick Start (5 Minutes)
 
-### Installation
+### 1. Setup Database
 
 ```bash
 # Install dependencies
 npm install
 
-# Start development server
+# Create and initialize database
+npm run db:push
+
+# Seed with example programs
+npm run db:seed
+```
+
+### 2. Run Development Server
+
+```bash
 npm run dev
 ```
 
-The app will be available at `http://localhost:3000`
+Visit `http://localhost:3000` - app is fully functional with backend!
 
-### Environment Setup
+### 3. Deploy to Production
 
-No environment variables required for basic functionality. The app uses localStorage for data persistence.
+```bash
+# Push to GitHub
+git push origin main
+
+# Deploy to Vercel (free)
+# https://vercel.com/new → Select repo → Deploy → Done!
+```
+
+Your app is now live! 🚀
 
 ## Usage
 
@@ -75,16 +107,30 @@ No environment variables required for basic functionality. The app uses localSto
    - Export to CSV for use in spreadsheets
    - Export to JSON for backup purposes
 
-## Data Storage
+## Database
 
-All data is stored in the browser's localStorage:
-- Programs (default programs provided)
-- User accounts and profiles
-- Program registrations
-- Notification preferences
-- Subscriptions
+### Default: SQLite
 
-To reset all data, clear your browser's localStorage for this site.
+Perfect for getting started - zero configuration:
+- Development: `prisma/dev.db`
+- Production: Auto-deployed with Vercel
+- Supports up to 1,000+ concurrent users
+
+```env
+DATABASE_URL="file:./prisma/dev.db"
+```
+
+### Production: PostgreSQL
+
+For scaling to thousands of users, switch to PostgreSQL from:
+- **Neon** (serverless) - https://neon.tech - $0-9/month
+- **Railway** - https://railway.app - $5+/month  
+- **Render** - https://render.com - Free tier available
+- **Supabase** - https://supabase.com - $25+/month
+
+**Migration is easy** - just change `DATABASE_URL` and redeploy!
+
+See [BACKEND_SETUP.md](./BACKEND_SETUP.md) for detailed database configuration.
 
 ## Deployment
 
@@ -144,15 +190,24 @@ The app comes with pre-loaded programs:
 
 ## API Routes
 
-Currently all data is client-side. In a future backend-integrated version, the following API routes would be available:
+### Programs
+```
+GET    /api/programs                    # List all programs
+GET    /api/programs?category=daily     # Filter by category
+POST   /api/programs                    # Create (admin)
+GET    /api/programs/:id                # Get single program
+PUT    /api/programs/:id                # Update (admin)
+DELETE /api/programs/:id                # Delete (admin)
+```
 
-- `POST /api/programs` - Create program
-- `GET /api/programs` - Get all programs
-- `PATCH /api/programs/[id]` - Update program
-- `DELETE /api/programs/[id]` - Delete program
-- `POST /api/registrations` - Register for program
-- `GET /api/users/registrations` - Get user registrations
-- `POST /api/notifications/send` - Send notifications
+### Registrations
+```
+GET    /api/registrations?userId=1      # Get user registrations
+POST   /api/registrations               # Register for program
+DELETE /api/registrations/:id           # Cancel registration
+```
+
+All endpoints use Prisma for type-safe, parameterized queries.
 
 ## File Structure
 

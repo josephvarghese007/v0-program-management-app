@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Program {
+  id        Int       @id @default(autoincrement())
+  title     String
+  category  String    // "daily", "weekly", "monthly"
+  icon      String
+  type      String?   // "online" or "offline"
+  link      String?   // For online programs
+  platform  String?   // "Zoom", "Google Meet", etc.
+  time      String
+  venue     String?
+  day       String?   // For weekly programs
+  occurrence String?  // For monthly programs (e.g., "First Sundays")
+  note      String?
+  description String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  registrations Registration[]
+
+  @@index([category])
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  phone     String?
+  password  String    // Hashed password
+  isAdmin   Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  registrations Registration[]
+  subscriptions Subscription[]
+
+  @@index([email])
+}
+
+model Registration {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  programId Int
+  createdAt DateTime  @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  program   Program   @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, programId])
+  @@index([userId])
+  @@index([programId])
+}
+
+model Subscription {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  category  String    // "daily", "weekly", "monthly"
+  createdAt DateTime  @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category])
+  @@index([userId])
+}
