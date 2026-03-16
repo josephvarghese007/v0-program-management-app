@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable React compiler for better performance
-  reactCompiler: true,
+  // React compiler disabled - not installed
+  // reactCompiler: true,
 
   // Optimize images
   images: {
