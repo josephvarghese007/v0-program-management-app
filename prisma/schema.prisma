@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Program {
+  id            String         @id @default(cuid())
+  title         String
+  icon          String
+  category      String         // 'daily' | 'weekly' | 'monthly'
+  type          String         // 'online' | 'offline'
+  time          String
+  platform      String?
+  link          String?
+  day           String?
+  occurrence    String?
+  venue         String?
+  note          String?
+  description   String?
+  maxAttendees  Int?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  registrations Registration[]
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String
+  phone         String?
+  isAdmin       Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  registrations Registration[]
+  subscription  Subscription?
+}
+
+model Registration {
+  id           String   @id @default(cuid())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  program      Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  programId    String
+  registeredAt DateTime @default(now())
+  status       String   @default("registered") // 'registered' | 'attended' | 'cancelled'
+  
+  @@unique([userId, programId])
+}
+
+model Subscription {
+  id              String   @id @default(cuid())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String   @unique
+  programCategory String   @default("all") // 'daily' | 'weekly' | 'monthly' | 'all'
+  enableEmail     Boolean  @default(true)
+  enableSMS       Boolean  @default(false)
+  createdAt       DateTime @default(now())
+}

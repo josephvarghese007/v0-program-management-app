@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: 'Jesus Youth Angamaly - Programs & Events',
   description: 'Discover daily prayers, weekly meetings, and monthly events in the Jesus Youth community. Register for programs and stay connected.',
   generator: 'v0.app',
+  manifest: '/manifest.json',
   icons: {
     icon: [
       {
@@ -29,10 +30,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  userScalable: true,
+  maximumScale: 1,
+  userScalable: false,
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f5f0eb' },
-    { media: '(prefers-color-scheme: dark)', color: '#0d1f3c' },
+    { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
   ],
 }
 
@@ -44,8 +46,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="font-sans antialiased">
+    <html lang="en" className="dark bg-background text-foreground h-full">
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
+      </head>
+      <body className="font-sans antialiased h-full">
         <ClientProvider>
           {children}
         </ClientProvider>

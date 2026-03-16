@@ -10,9 +10,10 @@ import { AddProgramModal } from '@/components/AddProgramModal';
 import { EditProgramModal } from '@/components/EditProgramModal';
 import { AdminDashboard } from '@/components/AdminDashboard';
 import { SettingsPage } from '@/components/SettingsPage';
-import { ExportMenu } from '@/components/ExportMenu';
 import { HeroSection } from '@/components/HeroSection';
-import { TabNavigation } from '@/components/TabNavigation';
+import { BottomNav, NavTab } from '@/components/BottomNav';
+import { ReflectionsView } from '@/components/ReflectionsView';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
   const {
@@ -29,7 +30,7 @@ export default function Home() {
     isRegisteredForProgram,
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'home' | 'daily' | 'weekly' | 'monthly' | 'calendar'>('home');
+  const [activeTab, setActiveTab] = useState<NavTab>('home');
   const [currentPage, setCurrentPage] = useState<'main' | 'admin' | 'settings'>('main');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -93,64 +94,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      {currentPage === 'main' && (
-        <header className="bg-gradient-to-r from-primary to-accent text-white sticky top-0 z-40 shadow-lg border-b border-primary/20">
-          <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold">✝️ Jesus Youth</h1>
-              <p className="text-white/80 text-sm font-medium">Angamaly Zone</p>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <ExportMenu programs={programs} />
-
-              {currentUser && (
-                <div className="text-right text-sm">
-                  <p className="font-medium">{currentUser.name}</p>
-                  <p className="text-white/80 text-xs">{currentUser.email}</p>
-                </div>
-              )}
-
-              {isAdmin && (
-                <button
-                  onClick={() => setCurrentPage('admin')}
-                  className="px-3 py-1.5 bg-white/20 text-white hover:bg-white/30 rounded-lg text-sm font-semibold transition"
-                  title="Admin Dashboard"
-                >
-                  👑 Admin
-                </button>
-              )}
-
-              {currentUser && (
-                <button
-                  onClick={() => setCurrentPage('settings')}
-                  className="px-3 py-1.5 bg-white/20 text-white hover:bg-white/30 rounded-lg transition font-medium"
-                  title="Settings"
-                >
-                  ⚙️
-                </button>
-              )}
-
-              {currentUser ? (
-                <button
-                  onClick={logoutUser}
-                  className="px-4 py-2 bg-white/20 text-white hover:bg-white/30 rounded-lg transition font-medium"
-                >
-                  Logout
-                </button>
-              ) : (
-                <button
-                  onClick={() => setShowAuthModal(true)}
-                  className="px-4 py-2 bg-white text-primary hover:bg-gray-100 rounded-lg transition font-semibold"
-                >
-                  Sign In
-                </button>
-              )}
-            </div>
-          </div>
-        </header>
-      )}
+      {/* Top spacing for status bar in PWA */}
+      <div className="h-safe pt-2"></div>
 
       {/* Admin Dashboard */}
       {currentPage === 'admin' && (
@@ -171,7 +116,7 @@ export default function Home() {
       {/* Main Content */}
       {currentPage === 'main' && (
         <>
-          <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+
           <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-8">
             {/* Admin Add Buttons */}
             {isAdmin && (
@@ -197,105 +142,127 @@ export default function Home() {
               </div>
             )}
 
-            {/* Home Tab */}
-            {activeTab === 'home' && (
-              <div className="space-y-8">
-                <HeroSection 
-                  upcomingPrograms={programs}
-                  onTabChange={setActiveTab}
-                  currentUser={currentUser}
-                />
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+              >
+                {/* Home Tab */}
+                {activeTab === 'home' && (
+                  <div className="space-y-8">
+                    <HeroSection 
+                      upcomingPrograms={programs}
+                      onTabChange={setActiveTab}
+                      currentUser={currentUser}
+                    />
 
-                <div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">Upcoming Daily Prayers</h3>
-                  <ProgramList
+                    <div>
+                      <h3 className="text-2xl font-bold text-foreground mb-4">Upcoming Daily Prayers</h3>
+                      <ProgramList
+                        programs={programs}
+                        category="daily"
+                        registeredProgramIds={registeredProgramIds}
+                        onToggleRegistration={currentUser ? handleToggleRegistration : undefined}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Programs Feed Tab */}
+                {activeTab === 'programs' && (
+                  <div className="space-y-8 pb-20">
+                    <div className="flex items-center justify-between mb-2">
+                      <h2 className="text-3xl font-extrabold text-foreground tracking-tight">All Programs</h2>
+                    </div>
+                    
+                    <div className="space-y-12">
+                      {programs.filter(p => p.category === 'daily').length > 0 && (
+                        <div>
+                          <h3 className="text-xl font-bold text-primary border-b border-border/50 pb-2 mb-4 flex items-center gap-2">
+                            <span className="material-symbols-rounded">volunteer_activism</span> Daily Prayers
+                          </h3>
+                          <ProgramList
+                            programs={programs}
+                            category="daily"
+                            isAdmin={isAdmin}
+                            onEdit={setEditingProgram}
+                            onDelete={handleDeleteProgram}
+                            registeredProgramIds={registeredProgramIds}
+                            onToggleRegistration={currentUser ? handleToggleRegistration : undefined}
+                          />
+                        </div>
+                      )}
+
+                      {programs.filter(p => p.category === 'weekly').length > 0 && (
+                        <div>
+                          <h3 className="text-xl font-bold text-secondary border-b border-border/50 pb-2 mb-4 flex items-center gap-2">
+                            <span className="material-symbols-rounded">calendar_month</span> Weekly Events
+                          </h3>
+                          <ProgramList
+                            programs={programs}
+                            category="weekly"
+                            isAdmin={isAdmin}
+                            onEdit={setEditingProgram}
+                            onDelete={handleDeleteProgram}
+                            registeredProgramIds={registeredProgramIds}
+                            onToggleRegistration={currentUser ? handleToggleRegistration : undefined}
+                          />
+                        </div>
+                      )}
+
+                      {programs.filter(p => p.category === 'monthly').length > 0 && (
+                        <div>
+                          <h3 className="text-xl font-bold text-accent border-b border-border/50 pb-2 mb-4 flex items-center gap-2">
+                            <span className="material-symbols-rounded">celebration</span> Monthly Meets
+                          </h3>
+                          <ProgramList
+                            programs={programs}
+                            category="monthly"
+                            isAdmin={isAdmin}
+                            onEdit={setEditingProgram}
+                            onDelete={handleDeleteProgram}
+                            registeredProgramIds={registeredProgramIds}
+                            onToggleRegistration={currentUser ? handleToggleRegistration : undefined}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Calendar Tab */}
+                {activeTab === 'calendar' && (
+                  <CalendarView
                     programs={programs}
-                    category="daily"
                     registeredProgramIds={registeredProgramIds}
                     onToggleRegistration={currentUser ? handleToggleRegistration : undefined}
+                    currentUser={currentUser}
                   />
-                </div>
-              </div>
-            )}
+                )}
 
-            {/* Daily Tab */}
-            {activeTab === 'daily' && (
-              <ProgramList
-                programs={programs}
-                category="daily"
-                isAdmin={isAdmin}
-                onEdit={setEditingProgram}
-                onDelete={handleDeleteProgram}
-                registeredProgramIds={registeredProgramIds}
-                onToggleRegistration={currentUser ? handleToggleRegistration : undefined}
-              />
-            )}
-
-            {/* Weekly Tab */}
-            {activeTab === 'weekly' && (
-              <ProgramList
-                programs={programs}
-                category="weekly"
-                isAdmin={isAdmin}
-                onEdit={setEditingProgram}
-                onDelete={handleDeleteProgram}
-                registeredProgramIds={registeredProgramIds}
-                onToggleRegistration={currentUser ? handleToggleRegistration : undefined}
-              />
-            )}
-
-            {/* Monthly Tab */}
-            {activeTab === 'monthly' && (
-              <ProgramList
-                programs={programs}
-                category="monthly"
-                isAdmin={isAdmin}
-                onEdit={setEditingProgram}
-                onDelete={handleDeleteProgram}
-                registeredProgramIds={registeredProgramIds}
-                onToggleRegistration={currentUser ? handleToggleRegistration : undefined}
-              />
-            )}
-
-            {/* Calendar Tab */}
-            {activeTab === 'calendar' && (
-              <CalendarView
-                programs={programs}
-                registeredProgramIds={registeredProgramIds}
-                onToggleRegistration={currentUser ? handleToggleRegistration : undefined}
-                currentUser={currentUser}
-              />
-            )}
+                {/* Reflections Tab */}
+                {activeTab === 'reflections' && (
+                  <ReflectionsView />
+                )}
+              </motion.div>
+            </AnimatePresence>
           </main>
 
-          {/* Footer */}
-          <footer className="bg-gradient-to-r from-primary to-accent text-white py-8 mt-16 w-full">
-            <div className="max-w-7xl mx-auto px-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
-                <div>
-                  <h4 className="font-bold text-lg mb-2">Jesus Youth</h4>
-                  <p className="text-white/80 text-sm">Growing together in faith and community</p>
-                </div>
-                <div>
-                  <h4 className="font-bold mb-2">Programs</h4>
-                  <ul className="text-white/80 text-sm space-y-1">
-                    <li>Daily Prayers</li>
-                    <li>Weekly Meetings</li>
-                    <li>Monthly Events</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-bold mb-2">Connect</h4>
-                  <a href="https://www.jesusyouth.org" target="_blank" rel="noreferrer" className="text-white/80 text-sm hover:text-white transition">
-                    Visit jesusyouth.org
-                  </a>
-                </div>
-              </div>
-              <div className="border-t border-white/20 pt-4 text-center text-white/70 text-xs">
-                © 2024 Jesus Youth Angamaly Zone. Building community through faith.
-              </div>
-            </div>
-          </footer>
+          <BottomNav 
+            activeTab={activeTab} 
+            onTabChange={setActiveTab} 
+            currentUser={currentUser}
+            onProfileClick={() => {
+              if (currentUser) {
+                setCurrentPage('settings');
+              } else {
+                setShowAuthModal(true);
+              }
+            }}
+          />
         </>
       )}
 
