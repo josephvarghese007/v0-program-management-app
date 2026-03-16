@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Program } from '@/lib/types';
-import { useApp } from '@/lib/context';
+import { Program, User } from '@/lib/types';
 
 interface ProgramCardProps {
   program: Program;
+  currentUser?: User | null;
   isAdmin?: boolean;
   onEdit?: (program: Program) => void;
   onDelete?: (id: string) => void;
@@ -15,13 +15,13 @@ interface ProgramCardProps {
 
 export function ProgramCard({
   program,
+  currentUser = null,
   isAdmin = false,
   onEdit,
   onDelete,
   isRegistered = false,
   onToggleRegistration,
 }: ProgramCardProps) {
-  const { currentUser } = useApp();
 
   return (
     <div className="bg-card rounded-xl border border-border p-6 hover:shadow-lg transition-all duration-300 hover:border-primary/30 group">

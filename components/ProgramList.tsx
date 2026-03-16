@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useMemo, useState, useEffect } from 'react';
-import { Program } from '@/lib/types';
+import { Program, User } from '@/lib/types';
 import { ProgramCard } from './ProgramCard';
 
 interface ProgramListProps {
   programs: Program[];
   category: 'daily' | 'weekly' | 'monthly';
+  currentUser?: User | null;
   isAdmin?: boolean;
   onEdit?: (program: Program) => void;
   onDelete?: (id: string) => void;
@@ -19,6 +20,7 @@ interface ProgramListProps {
 export function ProgramList({
   programs,
   category,
+  currentUser = null,
   isAdmin = false,
   onEdit,
   onDelete,
@@ -72,6 +74,7 @@ export function ProgramList({
               <ProgramCard
                 key={program.id}
                 program={program}
+                currentUser={currentUser}
                 isAdmin={isAdmin}
                 onEdit={onEdit}
                 onDelete={onDelete}

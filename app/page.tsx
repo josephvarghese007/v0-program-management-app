@@ -211,6 +211,7 @@ export default function Home() {
                   <ProgramList
                     programs={programs}
                     category="daily"
+                    currentUser={currentUser}
                     registeredProgramIds={registeredProgramIds}
                     onToggleRegistration={currentUser ? handleToggleRegistration : undefined}
                   />
@@ -223,6 +224,7 @@ export default function Home() {
               <ProgramList
                 programs={programs}
                 category="daily"
+                currentUser={currentUser}
                 isAdmin={isAdmin}
                 onEdit={setEditingProgram}
                 onDelete={handleDeleteProgram}
@@ -236,6 +238,7 @@ export default function Home() {
               <ProgramList
                 programs={programs}
                 category="weekly"
+                currentUser={currentUser}
                 isAdmin={isAdmin}
                 onEdit={setEditingProgram}
                 onDelete={handleDeleteProgram}
@@ -249,6 +252,7 @@ export default function Home() {
               <ProgramList
                 programs={programs}
                 category="monthly"
+                currentUser={currentUser}
                 isAdmin={isAdmin}
                 onEdit={setEditingProgram}
                 onDelete={handleDeleteProgram}
