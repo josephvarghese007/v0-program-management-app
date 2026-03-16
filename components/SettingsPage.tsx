@@ -23,16 +23,17 @@ export function SettingsPage({ onClose, programs = [] }: SettingsPageProps) {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         <div className="max-w-2xl mx-auto px-4 py-8">
           <button
             onClick={onClose}
-            className="mb-4 px-4 py-2 text-gray-600 hover:text-gray-900"
+            className="mb-4 inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold"
           >
-            ← Back
+            <span className="material-symbols-rounded text-lg">arrow_back</span>
+            Back
           </button>
-          <div className="text-center py-12">
-            <p className="text-gray-600">Please log in to access settings</p>
+          <div className="glass-panel rounded-2xl p-8 text-center">
+            <p className="text-muted-foreground">Please log in to access settings.</p>
           </div>
         </div>
       </div>
@@ -40,47 +41,47 @@ export function SettingsPage({ onClose, programs = [] }: SettingsPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-3xl mx-auto px-4 py-8">
         <button
           onClick={onClose}
-          className="mb-6 px-4 py-2 text-gray-600 hover:text-gray-900 font-medium"
+          className="mb-6 inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold"
         >
-          ← Back
+          <span className="material-symbols-rounded text-lg">arrow_back</span>
+          Back to Programs
         </button>
 
         <div className="space-y-6">
-          {/* Profile Section */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Profile Settings</h2>
+          <div className="glass-panel rounded-3xl p-6">
+            <h2 className="text-2xl font-semibold text-foreground mb-4">Profile Settings</h2>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                <p className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900">
+                <label className="block text-sm font-semibold text-muted-foreground mb-1">Name</label>
+                <p className="px-3 py-2 bg-card/60 border border-border/60 rounded-lg text-foreground">
                   {currentUser.name}
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <p className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900">
+                <label className="block text-sm font-semibold text-muted-foreground mb-1">Email</label>
+                <p className="px-3 py-2 bg-card/60 border border-border/60 rounded-lg text-foreground">
                   {currentUser.email}
                 </p>
               </div>
 
               {currentUser.phone && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                  <p className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900">
+                  <label className="block text-sm font-semibold text-muted-foreground mb-1">Phone</label>
+                  <p className="px-3 py-2 bg-card/60 border border-border/60 rounded-lg text-foreground">
                     {currentUser.phone}
                   </p>
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Member Since</label>
-                <p className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-900">
+                <label className="block text-sm font-semibold text-muted-foreground mb-1">Member Since</label>
+                <p className="px-3 py-2 bg-card/60 border border-border/60 rounded-lg text-foreground">
                   {new Date(currentUser.createdAt).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -91,43 +92,40 @@ export function SettingsPage({ onClose, programs = [] }: SettingsPageProps) {
             </div>
           </div>
 
-          {/* My Registrations */}
           <UserRegistrations programs={programs} />
 
-          {/* Notification Preferences */}
           <NotificationPreferences />
 
-          {/* Account Settings */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Account</h3>
+          <div className="glass-panel rounded-3xl p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Account</h3>
 
             <div className="space-y-3">
               <button
                 onClick={handleLogout}
-                className="w-full px-4 py-3 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition font-medium border border-red-200"
+                className="w-full px-4 py-3 bg-destructive/10 text-destructive rounded-lg hover:bg-destructive/20 transition font-semibold border border-destructive/30"
               >
                 Logout
               </button>
 
-              <p className="text-xs text-gray-500 text-center">
-                Your data is stored locally on this device
+              <p className="text-xs text-muted-foreground text-center">
+                Your data is stored locally on this device.
               </p>
             </div>
           </div>
 
-          {/* Support Section */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <h3 className="text-lg font-bold text-blue-900 mb-2">Support</h3>
-            <p className="text-blue-800 mb-4">
-              For help or questions about Jesus Youth programs, visit our main website:
+          <div className="glass-panel rounded-3xl p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-2">Support</h3>
+            <p className="text-muted-foreground mb-4">
+              For help or questions about Jesus Youth programs, visit our main website.
             </p>
             <a
               href="https://www.jesusyouth.org"
               target="_blank"
               rel="noreferrer"
-              className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:shadow-lg transition font-semibold"
             >
               Visit jesusyouth.org
+              <span className="material-symbols-rounded text-lg">arrow_outward</span>
             </a>
           </div>
         </div>

@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { Program } from '@/lib/types';
+import { ProgramIcon } from './ProgramIcon';
 
 interface CalendarViewProps {
   programs: Program[];
@@ -32,44 +33,33 @@ export function CalendarView({
     return programs.filter((p) => p.category === 'weekly' && p.day && dayMap[p.day]);
   }, [programs]);
 
-  const getDaysInMonth = (date: Date) => {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  };
-
-  const getFirstDayOfMonth = (date: Date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  };
+  const getDaysInMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  const getFirstDayOfMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay();
 
   const monthName = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
   const daysInMonth = getDaysInMonth(currentDate);
   const firstDay = getFirstDayOfMonth(currentDate);
-  const days = [];
+  const days: Array<number | null> = [];
 
-  // Add empty cells for days before month starts
   for (let i = 0; i < firstDay; i++) {
     days.push(null);
   }
 
-  // Add days of month
   for (let i = 1; i <= daysInMonth; i++) {
     days.push(i);
   }
 
   const nextMonth = () => {
-    setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
-    );
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
   };
 
   const prevMonth = () => {
-    setCurrentDate(
-      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
-    );
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
   };
 
   const getProgramsForDay = (day: number | null) => {
     if (!day) return [];
-    
+
     const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
     const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][
       date.getDay()
@@ -79,39 +69,39 @@ export function CalendarView({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-gray-900">Calendar</h2>
-        <div className="flex items-center gap-4">
+    <div className="glass-panel rounded-3xl p-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 className="text-2xl font-semibold text-foreground">Calendar</h2>
+          <p className="text-sm text-muted-foreground">Stay in sync with weekly programs.</p>
+        </div>
+        <div className="flex items-center gap-3">
           <button
             onClick={prevMonth}
-            className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+            className="w-10 h-10 rounded-full border border-border/60 bg-card/60 text-foreground hover:bg-muted/50 transition"
+            aria-label="Previous month"
           >
-            ←
+            <span className="material-symbols-rounded">chevron_left</span>
           </button>
-          <span className="w-32 text-center font-medium text-gray-900">{monthName}</span>
+          <span className="w-36 text-center font-semibold text-foreground">{monthName}</span>
           <button
             onClick={nextMonth}
-            className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+            className="w-10 h-10 rounded-full border border-border/60 bg-card/60 text-foreground hover:bg-muted/50 transition"
+            aria-label="Next month"
           >
-            →
+            <span className="material-symbols-rounded">chevron_right</span>
           </button>
         </div>
       </div>
 
-      {/* Weekday headers */}
       <div className="grid grid-cols-7 gap-2 mb-2">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div
-            key={day}
-            className="h-10 flex items-center justify-center font-semibold text-gray-700 text-sm"
-          >
+          <div key={day} className="h-10 flex items-center justify-center font-semibold text-muted-foreground text-xs">
             {day}
           </div>
         ))}
       </div>
 
-      {/* Calendar days */}
       <div className="grid grid-cols-7 gap-2">
         {days.map((day, idx) => {
           const dayPrograms = getProgramsForDay(day);
@@ -124,21 +114,17 @@ export function CalendarView({
           return (
             <div
               key={idx}
-              className={`min-h-20 p-2 border rounded-lg transition ${
+              className={`min-h-24 p-2 rounded-xl border transition ${
                 day
-                  ? `border-gray-200 hover:border-blue-400 ${
-                      isToday ? 'bg-blue-50 border-blue-300' : 'bg-white hover:bg-gray-50'
+                  ? `border-border/60 hover:border-primary/40 ${
+                      isToday ? 'bg-primary/10 border-primary/40' : 'bg-card/60 hover:bg-muted/40'
                     }`
-                  : 'bg-gray-50 border-transparent'
+                  : 'bg-muted/20 border-transparent'
               }`}
             >
               {day && (
                 <>
-                  <div
-                    className={`font-semibold text-sm mb-1 ${
-                      isToday ? 'text-blue-600' : 'text-gray-900'
-                    }`}
-                  >
+                  <div className={`font-semibold text-xs mb-1 ${isToday ? 'text-primary' : 'text-foreground'}`}>
                     {day}
                   </div>
                   {dayPrograms.length > 0 && (
@@ -146,14 +132,15 @@ export function CalendarView({
                       {dayPrograms.slice(0, 2).map((prog) => (
                         <div
                           key={prog.id}
-                          className="text-xs bg-blue-100 text-blue-700 px-1 py-0.5 rounded truncate"
+                          className="text-[11px] bg-secondary/15 text-foreground px-1.5 py-0.5 rounded-md truncate flex items-center gap-1"
                           title={prog.title}
                         >
-                          {prog.icon} {prog.title}
+                          <ProgramIcon icon={prog.icon} className="text-xs" />
+                          {prog.title}
                         </div>
                       ))}
                       {dayPrograms.length > 2 && (
-                        <div className="text-xs text-gray-500 px-1">
+                        <div className="text-[11px] text-muted-foreground px-1">
                           +{dayPrograms.length - 2} more
                         </div>
                       )}
@@ -166,20 +153,21 @@ export function CalendarView({
         })}
       </div>
 
-      {/* Weekly events list */}
-      <div className="mt-6 pt-6 border-t">
-        <h3 className="font-semibold text-gray-900 mb-3">Recurring Weekly Events</h3>
+      <div className="mt-6 pt-6 border-t border-border/60">
+        <h3 className="font-semibold text-foreground mb-3">Recurring Weekly Events</h3>
         <div className="space-y-2">
           {weeklyPrograms.map((prog) => (
             <div
               key={prog.id}
-              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+              className="flex flex-wrap items-center justify-between gap-4 p-3 bg-card/60 rounded-2xl border border-border/60 hover:bg-muted/40 transition"
             >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">{prog.icon}</span>
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+                  <ProgramIcon icon={prog.icon} className="text-lg text-primary" />
+                </div>
                 <div className="min-w-0">
-                  <p className="font-medium text-gray-900 truncate">{prog.title}</p>
-                  <p className="text-sm text-gray-600">
+                  <p className="font-semibold text-foreground truncate">{prog.title}</p>
+                  <p className="text-sm text-muted-foreground">
                     {prog.day} at {prog.time}
                   </p>
                 </div>
@@ -187,13 +175,13 @@ export function CalendarView({
               {currentUser && onToggleRegistration && (
                 <button
                   onClick={() => onToggleRegistration(prog.id)}
-                  className={`px-3 py-1 text-sm rounded transition flex-shrink-0 ${
+                  className={`px-3 py-1.5 text-sm rounded-lg transition flex-shrink-0 border ${
                     registeredProgramIds.includes(prog.id)
-                      ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      ? 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/20'
+                      : 'bg-card/60 text-foreground border-border/60 hover:bg-muted/40'
                   }`}
                 >
-                  {registeredProgramIds.includes(prog.id) ? '✓ Registered' : 'Register'}
+                  {registeredProgramIds.includes(prog.id) ? 'Registered' : 'Register'}
                 </button>
               )}
             </div>

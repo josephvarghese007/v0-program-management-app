@@ -60,39 +60,42 @@ export function AuthModal({ onClose }: AuthModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-background/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <motion.div 
+    <div className="fixed inset-0 bg-background/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
-        className="bg-card w-full max-w-md rounded-3xl shadow-2xl border border-border/50 overflow-hidden"
+        className="bg-card w-full max-w-md rounded-3xl shadow-2xl border border-border/60 overflow-hidden"
       >
-        {/* Tabs */}
-        <div className="flex border-b border-border/50 bg-muted/30 p-1">
-          {['login', 'signup', 'admin'].map((t) => (
+        <div className="flex border-b border-border/60 bg-muted/30 p-1">
+          {[
+            { id: 'login', label: 'Login', icon: 'login' },
+            { id: 'signup', label: 'Sign Up', icon: 'auto_awesome' },
+            { id: 'admin', label: 'Admin', icon: 'admin_panel_settings' },
+          ].map((item) => (
             <button
-              key={t}
+              key={item.id}
               onClick={() => {
-                setTab(t as typeof tab);
+                setTab(item.id as typeof tab);
                 setError('');
               }}
-              className={`flex-1 py-3 text-sm font-bold text-center transition-all rounded-t-2xl rounded-b-md mx-1 ${
-                tab === t
-                  ? 'text-primary bg-background shadow-sm border border-border/50 border-b-0'
+              className={`flex-1 py-3 text-sm font-semibold text-center transition-all rounded-2xl mx-1 flex items-center justify-center gap-2 ${
+                tab === item.id
+                  ? 'text-primary bg-background shadow-sm border border-border/60'
                   : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
               }`}
             >
-              {t === 'admin' ? '👑 Admin' : t === 'signup' ? '✨ Sign Up' : '🔓 Login'}
+              <span className="material-symbols-rounded text-base">{item.icon}</span>
+              {item.label}
             </button>
           ))}
         </div>
 
-        {/* Content */}
         <div className="p-8">
           {tab === 'admin' ? (
             <form onSubmit={handleAdminLogin}>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-900 mb-2">
+                <label className="block text-sm font-semibold text-muted-foreground mb-2">
                   Admin Password
                 </label>
                 <input
@@ -100,13 +103,13 @@ export function AuthModal({ onClose }: AuthModalProps) {
                   value={adminPassword}
                   onChange={(e) => setAdminPassword(e.target.value)}
                   placeholder="Enter admin password"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border/60 rounded-lg bg-card/60 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </div>
-              {error && <div className="text-red-600 text-sm mb-4">{error}</div>}
+              {error && <div className="text-destructive text-sm mb-4">{error}</div>}
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition"
+                className="w-full bg-primary text-primary-foreground py-2 rounded-lg font-semibold hover:shadow-lg transition"
               >
                 Login as Admin
               </button>
@@ -116,7 +119,7 @@ export function AuthModal({ onClose }: AuthModalProps) {
               <div className="space-y-4">
                 {tab === 'signup' && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-2">
+                    <label className="block text-sm font-semibold text-muted-foreground mb-2">
                       Full Name
                     </label>
                     <input
@@ -124,26 +127,24 @@ export function AuthModal({ onClose }: AuthModalProps) {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="John Doe"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-border/60 rounded-lg bg-card/60 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                     />
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Email
-                  </label>
+                  <label className="block text-sm font-semibold text-muted-foreground mb-2">Email</label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-border/60 rounded-lg bg-card/60 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                  <label className="block text-sm font-semibold text-muted-foreground mb-2">
                     Phone (Optional)
                   </label>
                   <input
@@ -151,24 +152,24 @@ export function AuthModal({ onClose }: AuthModalProps) {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+1 (555) 000-0000"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-border/60 rounded-lg bg-card/60 text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                   />
                 </div>
               </div>
 
-              {error && <div className="text-red-600 text-sm mt-4">{error}</div>}
+              {error && <div className="text-destructive text-sm mt-4">{error}</div>}
 
               <div className="flex gap-3 mt-6">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-900 rounded-lg hover:bg-gray-50 transition"
+                  className="flex-1 px-4 py-2 border border-border/60 text-foreground rounded-lg hover:bg-muted/40 transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                  className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:shadow-lg transition font-semibold"
                 >
                   {tab === 'signup' ? 'Sign Up' : 'Login'}
                 </button>
@@ -179,7 +180,7 @@ export function AuthModal({ onClose }: AuthModalProps) {
           {tab === 'login' && (
             <button
               onClick={() => setTab('signup')}
-              className="w-full mt-4 text-primary hover:underline text-sm font-bold"
+              className="w-full mt-4 text-primary hover:underline text-sm font-semibold"
             >
               Don't have an account? Sign up
             </button>

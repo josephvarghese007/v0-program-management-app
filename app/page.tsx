@@ -117,25 +117,25 @@ export default function Home() {
       {currentPage === 'main' && (
         <>
 
-          <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-8">
+          <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-10 pb-28">
             {/* Admin Add Buttons */}
             {isAdmin && (
               <div className="mb-6 flex flex-wrap gap-2">
                 <button
                   onClick={() => handleAddProgram('daily')}
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:shadow-md transition font-semibold"
+                  className="px-4 py-2 rounded-xl border border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 transition font-semibold"
                 >
                   + Add Daily Program
                 </button>
                 <button
                   onClick={() => handleAddProgram('weekly')}
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:shadow-md transition font-semibold"
+                  className="px-4 py-2 rounded-xl border border-secondary/30 bg-secondary/10 text-secondary hover:bg-secondary/20 transition font-semibold"
                 >
                   + Add Weekly Program
                 </button>
                 <button
                   onClick={() => handleAddProgram('monthly')}
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:shadow-md transition font-semibold"
+                  className="px-4 py-2 rounded-xl border border-accent/30 bg-accent/10 text-accent hover:bg-accent/20 transition font-semibold"
                 >
                   + Add Monthly Program
                 </button>
@@ -160,7 +160,7 @@ export default function Home() {
                     />
 
                     <div>
-                      <h3 className="text-2xl font-bold text-foreground mb-4">Upcoming Daily Prayers</h3>
+                      <h3 className="text-2xl font-semibold text-foreground mb-4">Upcoming Daily Prayers</h3>
                       <ProgramList
                         programs={programs}
                         category="daily"
@@ -175,13 +175,13 @@ export default function Home() {
                 {activeTab === 'programs' && (
                   <div className="space-y-8 pb-20">
                     <div className="flex items-center justify-between mb-2">
-                      <h2 className="text-3xl font-extrabold text-foreground tracking-tight">All Programs</h2>
+                      <h2 className="section-title text-foreground">All Programs</h2>
                     </div>
                     
                     <div className="space-y-12">
                       {programs.filter(p => p.category === 'daily').length > 0 && (
                         <div>
-                          <h3 className="text-xl font-bold text-primary border-b border-border/50 pb-2 mb-4 flex items-center gap-2">
+                          <h3 className="text-xl font-semibold text-primary border-b border-border/50 pb-2 mb-4 flex items-center gap-2">
                             <span className="material-symbols-rounded">volunteer_activism</span> Daily Prayers
                           </h3>
                           <ProgramList
@@ -198,7 +198,7 @@ export default function Home() {
 
                       {programs.filter(p => p.category === 'weekly').length > 0 && (
                         <div>
-                          <h3 className="text-xl font-bold text-secondary border-b border-border/50 pb-2 mb-4 flex items-center gap-2">
+                          <h3 className="text-xl font-semibold text-secondary border-b border-border/50 pb-2 mb-4 flex items-center gap-2">
                             <span className="material-symbols-rounded">calendar_month</span> Weekly Events
                           </h3>
                           <ProgramList
@@ -215,7 +215,7 @@ export default function Home() {
 
                       {programs.filter(p => p.category === 'monthly').length > 0 && (
                         <div>
-                          <h3 className="text-xl font-bold text-accent border-b border-border/50 pb-2 mb-4 flex items-center gap-2">
+                          <h3 className="text-xl font-semibold text-accent border-b border-border/50 pb-2 mb-4 flex items-center gap-2">
                             <span className="material-symbols-rounded">celebration</span> Monthly Meets
                           </h3>
                           <ProgramList

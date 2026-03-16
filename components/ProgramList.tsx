@@ -12,8 +12,6 @@ interface ProgramListProps {
   onDelete?: (id: string) => void;
   registeredProgramIds?: string[];
   onToggleRegistration?: (programId: string) => void;
-  title?: string;
-  icon?: string;
 }
 
 export function ProgramList({
@@ -24,28 +22,11 @@ export function ProgramList({
   onDelete,
   registeredProgramIds = [],
   onToggleRegistration,
-  title,
-  icon,
 }: ProgramListProps) {
   const filteredPrograms = useMemo(
     () => programs.filter((p) => p.category === category),
     [programs, category]
   );
-
-  const labels: Record<string, string> = {
-    daily: 'Daily Online Prayers',
-    weekly: 'Weekly Meetings',
-    monthly: 'Monthly Meetings',
-  };
-
-  const icons: Record<string, string> = {
-    daily: '☀️',
-    weekly: '📅',
-    monthly: '🗓️',
-  };
-
-  const displayTitle = title || labels[category];
-  const displayIcon = icon || icons[category];
 
   return (
     <div className="space-y-4">
@@ -64,9 +45,9 @@ export function ProgramList({
           />
         ))
       ) : (
-        <div className="text-center py-8 text-gray-500">
-          <p className="text-lg">No programs yet</p>
-          {isAdmin && <p className="text-sm mt-1">Click "Add Program" to get started</p>}
+        <div className="rounded-2xl border border-dashed border-border/70 bg-card/40 p-8 text-center text-muted-foreground">
+          <p className="text-lg font-semibold text-foreground">No programs yet</p>
+          {isAdmin && <p className="text-sm mt-2">Use the Add Program buttons to get started.</p>}
         </div>
       )}
     </div>
