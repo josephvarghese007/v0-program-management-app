@@ -65,28 +65,36 @@ export function ProgramList({
         )}
       </div>
 
-      <div className="space-y-3">
-        {filteredPrograms.length > 0 ? (
-          filteredPrograms.map((program) => (
-            <ProgramCard
-              key={program.id}
-              program={program}
-              isAdmin={isAdmin}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              isRegistered={registeredProgramIds.includes(program.id)}
-              onToggleRegistration={
-                onToggleRegistration ? () => onToggleRegistration(program.id) : undefined
-              }
-            />
-          ))
-        ) : (
-          <div className="text-center py-8 text-gray-500">
-            <p className="text-lg">No programs yet</p>
-            {isAdmin && <p className="text-sm mt-1">Click "Add Program" to get started</p>}
+      {isHydrated ? (
+        <div className="space-y-3">
+          {filteredPrograms.length > 0 ? (
+            filteredPrograms.map((program) => (
+              <ProgramCard
+                key={program.id}
+                program={program}
+                isAdmin={isAdmin}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                isRegistered={registeredProgramIds.includes(program.id)}
+                onToggleRegistration={
+                  onToggleRegistration ? () => onToggleRegistration(program.id) : undefined
+                }
+              />
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              <p className="text-lg">No programs yet</p>
+              {isAdmin && <p className="text-sm mt-1">Click "Add Program" to get started</p>}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="space-y-3">
+          <div className="text-center py-8 text-gray-400">
+            <p className="text-lg">Loading programs...</p>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
