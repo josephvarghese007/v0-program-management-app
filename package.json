@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run build",
     "verify:local": "bash scripts/verify-local.sh",
-    "deploy:vps": "bash scripts/deploy-vps.sh"
+    "deploy:vps": "bash scripts/deploy-vps.sh",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
