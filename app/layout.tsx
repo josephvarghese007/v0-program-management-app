@@ -39,6 +39,7 @@ export const viewport: Viewport = {
 }
 
 import { ClientProvider } from '@/components/layout/ClientProvider'
+import { InstallPrompt } from '@/components/ui/InstallPrompt'
 
 export default function RootLayout({
   children,
@@ -55,11 +56,13 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="font-sans antialiased h-full">
         <ClientProvider>
           {children}
         </ClientProvider>
+        <InstallPrompt />
         <Analytics />
       </body>
     </html>

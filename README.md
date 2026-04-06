@@ -26,7 +26,7 @@ A modern web application for managing and discovering Jesus Youth community prog
 ```bash
 # 1) Clone
 git clone <your-repo-url>
-cd v0-program-management-app
+cd jesus-youth
 
 # 2) Install dependencies
 npm install
@@ -36,6 +36,19 @@ cp .env.example .env.local
 
 # 4) Start development server
 npm run dev
+```
+
+**Development Troubleshooting (Turbopack & Port Locks):**
+If you encounter development server errors (e.g., related to Turbopack, `@serwist/next`, or `.next/dev/lock` locking the port), you can wipe the cache and disable Turbopack:
+
+```bash
+# For Windows PowerShell
+Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue
+$env:TURBOPACK='0'; npm run dev
+
+# For Mac/Linux
+rm -rf .next
+TURBOPACK=0 npm run dev
 ```
 
 The app will be available at `http://localhost:3000`.
