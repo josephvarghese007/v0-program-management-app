@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import { useApp } from '@/lib/context';
 import { Program } from '@/lib/types';
-import { ProgramIcon } from './ProgramIcon';
+import { ProgramIcon } from '../ui/ProgramIcon';
 
 interface UserRegistrationsProps {
   programs: Program[];

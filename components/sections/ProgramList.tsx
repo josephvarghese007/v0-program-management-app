@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import { Program } from '@/lib/types';
-import { ProgramCard } from './ProgramCard';
+import { ProgramCard } from '../cards/ProgramCard';
 
 interface ProgramListProps {
   programs: Program[];

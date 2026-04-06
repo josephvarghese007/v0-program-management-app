@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { Program } from '@/lib/types';
-import { ProgramIcon } from './ProgramIcon';
+import { ProgramIcon } from '../ui/ProgramIcon';
 
 interface CalendarViewProps {
   programs: Program[];

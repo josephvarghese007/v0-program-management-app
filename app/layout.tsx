@@ -38,7 +38,7 @@ export const viewport: Viewport = {
   ],
 }
 
-import { ClientProvider } from '@/components/ClientProvider'
+import { ClientProvider } from '@/components/layout/ClientProvider'
 
 export default function RootLayout({
   children,

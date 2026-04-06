@@ -3,7 +3,7 @@
 import React from 'react';
 import { Program } from '@/lib/types';
 import { useApp } from '@/lib/context';
-import { ProgramIcon } from './ProgramIcon';
+import { ProgramIcon } from '../ui/ProgramIcon';
 
 interface ProgramCardProps {
   program: Program;

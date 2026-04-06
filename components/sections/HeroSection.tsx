@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Program, User } from '@/lib/types';
 import { motion } from 'framer-motion';
-import { ProgramIcon } from './ProgramIcon';
+import { ProgramIcon } from '../ui/ProgramIcon';
 
 interface HeroSectionProps {
   upcomingPrograms: Program[];

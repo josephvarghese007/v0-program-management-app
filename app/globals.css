@@ -4,7 +4,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ═══════════════════════════════════════════════
+   DESIGN TOKEN SYSTEM
+   ═══════════════════════════════════════════════ */
+
 :root {
+  /* ── Color Palette (Light) ── */
   --background: oklch(0.985 0.01 250);
   --foreground: oklch(0.2 0.03 250);
   --card: oklch(1 0 0);
@@ -49,7 +54,77 @@
   --glow-primary: oklch(0.62 0.14 260 / 0.18);
   --glow-accent: oklch(0.7 0.1 160 / 0.12);
   --glow-secondary: oklch(0.76 0.12 80 / 0.12);
+
+  /* ── Spacing Scale ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* ── Radius Scale ── */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+
+  /* ── Blur Scale ── */
+  --blur-sm: blur(8px);
+  --blur-md: blur(16px);
+  --blur-lg: blur(28px);
+  --blur-xl: blur(40px);
+
+  /* ── Glow Presets ── */
+  --glow-gold: 0 0 40px rgba(255, 210, 100, 0.25);
+  --glow-teal: 0 0 40px rgba(0, 200, 180, 0.25);
+  --glow-blue: 0 0 40px rgba(100, 140, 255, 0.2);
+  --glow-soft: 0 0 20px rgba(255, 255, 255, 0.05);
+  --glow-live: 0 0 30px rgba(239, 68, 68, 0.35);
+
+  /* ── Shadow Scale ── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.18);
+  --shadow-xl: 0 16px 50px rgba(0, 0, 0, 0.22);
+
+  /* ── Animation Timings ── */
+  --spring-fast: 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --spring-slow: 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Typography Scale ── */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+  /* ── Icon Sizes ── */
+  --icon-sm: 20px;
+  --icon-md: 24px;
+  --icon-lg: 28px;
+  --icon-xl: 32px;
+
+  /* ── Breakpoints (reference) ── */
+  /* sm: 640px | md: 768px | lg: 1024px | xl: 1280px | 2xl: 1536px */
 }
+
+/* ═══════════════════════════════════════════════
+   DARK THEME
+   ═══════════════════════════════════════════════ */
 
 .dark {
   --background: oklch(0.16 0.04 250);
@@ -96,6 +171,10 @@
   --glow-secondary: oklch(0.66 0.12 220 / 0.14);
 }
 
+/* ═══════════════════════════════════════════════
+   TAILWIND THEME MAPPING
+   ═══════════════════════════════════════════════ */
+
 @theme inline {
   --font-sans: 'Manrope', 'Geist', 'Geist Fallback';
   --font-display: 'Fraunces', 'Geist', 'Geist Fallback';
@@ -138,6 +217,10 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* ═══════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════ */
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -150,29 +233,142 @@
       radial-gradient(800px circle at 0% 100%, var(--glow-secondary), transparent 60%);
     background-attachment: fixed;
   }
-  h1,
-  h2,
-  h3,
-  h4 {
+
+  /* Typography: Fraunces for headings, Manrope for body */
+  h1, h2, h3, h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
+
   ::selection {
     background: color-mix(in oklch, var(--primary) 30%, transparent);
   }
+
+  /* Accessible focus ring */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Skip to content (accessibility) */
+  .skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: var(--space-4);
+    z-index: 100;
+    padding: var(--space-3) var(--space-6);
+    background: var(--primary);
+    color: var(--primary-foreground);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: top var(--spring-fast);
+  }
+  .skip-to-content:focus {
+    top: var(--space-4);
+  }
 }
 
+/* ═══════════════════════════════════════════════
+   COMPONENT UTILITIES
+   ═══════════════════════════════════════════════ */
+
 @layer components {
+  /* ── Glass Panels ── */
   .glass-panel {
     @apply bg-card/70 border border-border/60 shadow-xl backdrop-blur-xl;
   }
   .glass-panel-strong {
     @apply bg-card/80 border border-border/70 shadow-2xl backdrop-blur-xl;
   }
+
+  /* ── Glow Card ── */
+  .glow-card {
+    @apply bg-card/70 border border-border/60 shadow-xl backdrop-blur-xl;
+    box-shadow: var(--glow-soft);
+    transition: box-shadow var(--spring-fast), transform var(--spring-fast);
+  }
+  .glow-card:hover {
+    box-shadow: var(--glow-gold);
+    transform: translateY(-2px);
+  }
+
+  /* ── Gradient Text ── */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
+  }
+  .gradient-text-gold {
+    background: linear-gradient(135deg, var(--primary), oklch(0.9 0.14 80));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Chips / Badges ── */
   .chip {
     @apply inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold border;
   }
+
+  /* ── Section Title ── */
   .section-title {
     @apply text-3xl md:text-4xl font-semibold tracking-tight;
+    font-family: var(--font-display);
   }
+
+  /* ── Floating Element ── */
+  .floating-element {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* ── Skeleton Shimmer ── */
+  .skeleton {
+    @apply animate-pulse rounded-xl;
+    background: linear-gradient(
+      90deg,
+      var(--muted) 25%,
+      color-mix(in oklch, var(--muted) 60%, transparent) 50%,
+      var(--muted) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  /* ── Live Badge ── */
+  .live-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    box-shadow: var(--glow-live);
+  }
+
+  /* ── Icon Sizing ── */
+  .icon-sm { font-size: var(--icon-sm) !important; }
+  .icon-md { font-size: var(--icon-md) !important; }
+  .icon-lg { font-size: var(--icon-lg) !important; }
+  .icon-xl { font-size: var(--icon-xl) !important; }
+}
+
+/* ═══════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+   ═══════════════════════════════════════════════ */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes glow-breathe {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 210, 100, 0.1); }
+  50% { box-shadow: 0 0 40px rgba(255, 210, 100, 0.25); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
 }

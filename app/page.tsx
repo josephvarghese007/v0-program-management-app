@@ -3,16 +3,16 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useApp } from '@/lib/context';
 import { Program } from '@/lib/types';
-import { ProgramList } from '@/components/ProgramList';
-import { CalendarView } from '@/components/CalendarView';
-import { AuthModal } from '@/components/AuthModal';
-import { AddProgramModal } from '@/components/AddProgramModal';
-import { EditProgramModal } from '@/components/EditProgramModal';
-import { AdminDashboard } from '@/components/AdminDashboard';
-import { SettingsPage } from '@/components/SettingsPage';
-import { HeroSection } from '@/components/HeroSection';
-import { BottomNav, NavTab } from '@/components/BottomNav';
-import { ReflectionsView } from '@/components/ReflectionsView';
+import { ProgramList } from '@/components/sections/ProgramList';
+import { CalendarView } from '@/components/sections/CalendarView';
+import { AuthModal } from '@/components/modals/AuthModal';
+import { AddProgramModal } from '@/components/modals/AddProgramModal';
+import { EditProgramModal } from '@/components/modals/EditProgramModal';
+import { AdminDashboard } from '@/components/sections/AdminDashboard';
+import { SettingsPage } from '@/components/sections/SettingsPage';
+import { HeroSection } from '@/components/sections/HeroSection';
+import { BottomNav, NavTab } from '@/components/layout/BottomNav';
+import { ReflectionsView } from '@/components/sections/ReflectionsView';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
