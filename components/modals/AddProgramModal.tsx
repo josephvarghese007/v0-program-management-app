@@ -81,18 +81,23 @@ export function AddProgramModal({ category, onSave, onClose }: AddProgramModalPr
   };
 
   return (
-    <div className="fixed inset-0 bg-background/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="glass-panel rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6 sticky top-0 bg-card/90 border-b border-border/60">
-          <h2 className="text-xl font-semibold text-foreground">
+    <div
+      className="fixed inset-0 bg-background/70 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="glass-panel rounded-t-2xl sm:rounded-3xl shadow-2xl w-full sm:max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 sticky top-0 bg-card/90 border-b border-border/60 backdrop-blur-md z-10">
+          <h2 className="text-lg sm:text-xl font-semibold text-foreground">
             Add {category === 'daily' ? 'Daily' : category === 'weekly' ? 'Weekly' : 'Monthly'} Program
           </h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
             Tip: Use a Material icon name like "auto_awesome".
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-3 sm:space-y-4">
           <div>
             <label className="block text-sm font-semibold text-muted-foreground mb-1">Title *</label>
             <input

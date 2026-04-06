@@ -60,12 +60,19 @@ export function AuthModal({ onClose }: AuthModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-background/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div
+      className="fixed inset-0 bg-background/70 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      onKeyDown={(e) => { if (e.key === 'Escape') onClose(); }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Authentication"
+    >
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 15 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 15 }}
-        className="bg-card w-full max-w-md rounded-3xl shadow-2xl border border-border/60 overflow-hidden"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 40 }}
+        className="bg-card w-full sm:max-w-md rounded-t-2xl sm:rounded-3xl shadow-2xl border border-border/60 overflow-hidden max-h-[90vh] overflow-y-auto"
       >
         <div className="flex border-b border-border/60 bg-muted/30 p-1">
           {[
@@ -91,7 +98,7 @@ export function AuthModal({ onClose }: AuthModalProps) {
           ))}
         </div>
 
-        <div className="p-8">
+        <div className="p-5 sm:p-8">
           {tab === 'admin' ? (
             <form onSubmit={handleAdminLogin}>
               <div className="mb-4">

@@ -24,16 +24,16 @@ export function SettingsPage({ onClose, programs = [] }: SettingsPageProps) {
   if (!currentUser) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="max-w-2xl mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
           <button
             onClick={onClose}
-            className="mb-4 inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold"
+            className="mb-4 inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold text-sm"
           >
             <span className="material-symbols-rounded text-lg">arrow_back</span>
             Back
           </button>
-          <div className="glass-panel rounded-2xl p-8 text-center">
-            <p className="text-muted-foreground">Please log in to access settings.</p>
+          <div className="glass-panel rounded-2xl p-5 sm:p-8 text-center">
+            <p className="text-sm text-muted-foreground">Please log in to access settings.</p>
           </div>
         </div>
       </div>
@@ -42,18 +42,18 @@ export function SettingsPage({ onClose, programs = [] }: SettingsPageProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="max-w-3xl mx-auto px-3 sm:px-4 py-4 sm:py-8 pb-20">
         <button
           onClick={onClose}
-          className="mb-6 inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold"
+          className="mb-4 sm:mb-6 inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold text-sm"
         >
           <span className="material-symbols-rounded text-lg">arrow_back</span>
-          Back to Programs
+          Back
         </button>
 
-        <div className="space-y-6">
-          <div className="glass-panel rounded-3xl p-6">
-            <h2 className="text-2xl font-semibold text-foreground mb-4">Profile Settings</h2>
+        <div className="space-y-4 sm:space-y-6">
+          <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6">
+            <h2 className="text-xl sm:text-2xl font-semibold text-foreground mb-3 sm:mb-4">Profile Settings</h2>
 
             <div className="space-y-4">
               <div>

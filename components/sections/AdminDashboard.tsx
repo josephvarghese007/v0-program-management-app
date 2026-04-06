@@ -48,21 +48,21 @@ export function AdminDashboard({
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8 pb-20">
         <button
           onClick={onClose}
-          className="mb-6 inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold"
+          className="mb-4 sm:mb-6 inline-flex items-center gap-2 text-muted-foreground hover:text-foreground font-semibold text-sm"
         >
           <span className="material-symbols-rounded text-lg">arrow_back</span>
-          Back to Programs
+          Back
         </button>
 
-        <div className="mb-6">
-          <h1 className="text-3xl font-semibold text-foreground mb-2">Admin Dashboard</h1>
-          <p className="text-muted-foreground">Manage all programs and monitor registrations.</p>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-foreground mb-1 sm:mb-2">Admin Dashboard</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">Manage all programs and monitor registrations.</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-4 mb-4 sm:mb-6">
           {[
             {
               label: 'Total Programs',
@@ -95,34 +95,34 @@ export function AdminDashboard({
               tone: 'text-secondary border-secondary/30 bg-secondary/10',
             },
           ].map((stat) => (
-            <div key={stat.label} className={`border rounded-2xl p-4 text-center ${stat.tone}`}>
-              <span className="material-symbols-rounded text-2xl mb-2 inline-flex">{stat.icon}</span>
-              <div className="text-2xl font-semibold">{stat.value}</div>
-              <div className="text-xs font-semibold opacity-80">{stat.label}</div>
+            <div key={stat.label} className={`border rounded-xl sm:rounded-2xl p-2.5 sm:p-4 text-center ${stat.tone}`}>
+              <span className="material-symbols-rounded text-xl sm:text-2xl mb-1 sm:mb-2 inline-flex">{stat.icon}</span>
+              <div className="text-lg sm:text-2xl font-semibold">{stat.value}</div>
+              <div className="text-[10px] sm:text-xs font-semibold opacity-80">{stat.label}</div>
             </div>
           ))}
         </div>
 
-        <div className="glass-panel rounded-2xl p-4 mb-6">
-          <h2 className="font-semibold text-foreground mb-3">Quick Actions</h2>
+        <div className="glass-panel rounded-xl sm:rounded-2xl p-3 sm:p-4 mb-4 sm:mb-6">
+          <h2 className="font-semibold text-sm sm:text-base text-foreground mb-2 sm:mb-3">Quick Actions</h2>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => onAddProgram('daily')}
-              className="px-4 py-2 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg transition font-semibold border border-primary/30"
+              className="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary/10 text-primary hover:bg-primary/20 rounded-lg transition font-semibold border border-primary/30 text-xs sm:text-sm"
             >
-              Add Daily Program
+              + Daily
             </button>
             <button
               onClick={() => onAddProgram('weekly')}
-              className="px-4 py-2 bg-secondary/10 text-secondary hover:bg-secondary/20 rounded-lg transition font-semibold border border-secondary/30"
+              className="px-3 py-1.5 sm:px-4 sm:py-2 bg-secondary/10 text-secondary hover:bg-secondary/20 rounded-lg transition font-semibold border border-secondary/30 text-xs sm:text-sm"
             >
-              Add Weekly Program
+              + Weekly
             </button>
             <button
               onClick={() => onAddProgram('monthly')}
-              className="px-4 py-2 bg-accent/10 text-accent hover:bg-accent/20 rounded-lg transition font-semibold border border-accent/30"
+              className="px-3 py-1.5 sm:px-4 sm:py-2 bg-accent/10 text-accent hover:bg-accent/20 rounded-lg transition font-semibold border border-accent/30 text-xs sm:text-sm"
             >
-              Add Monthly Program
+              + Monthly
             </button>
           </div>
         </div>
@@ -155,13 +155,48 @@ export function AdminDashboard({
           </div>
         </div>
 
-        <div className="glass-panel rounded-2xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-border/60">
-            <h2 className="font-semibold text-foreground">Programs ({filteredPrograms.length})</h2>
+        <div className="glass-panel rounded-xl sm:rounded-2xl overflow-hidden">
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-border/60">
+            <h2 className="font-semibold text-sm sm:text-base text-foreground">Programs ({filteredPrograms.length})</h2>
           </div>
 
           {filteredPrograms.length > 0 ? (
-            <div className="overflow-x-auto">
+            <>
+              {/* Mobile: Card layout */}
+              <div className="sm:hidden divide-y divide-border/40">
+                {filteredPrograms.map((program) => (
+                  <div key={program.id} className="p-3 flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                      <ProgramIcon icon={program.icon} className="text-base text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm text-foreground truncate">{program.title}</p>
+                      <p className="text-[11px] text-muted-foreground">
+                        <span className="capitalize">{program.category}</span>
+                        {program.day && ` · ${program.day}`}
+                        {program.time && ` · ${program.time}`}
+                      </p>
+                    </div>
+                    <div className="flex gap-1 flex-shrink-0">
+                      <button
+                        onClick={() => onEdit(program)}
+                        className="p-1.5 rounded-lg text-primary hover:bg-primary/10 transition"
+                      >
+                        <span className="material-symbols-rounded text-[18px]">edit</span>
+                      </button>
+                      <button
+                        onClick={() => handleDelete(program.id, program.title)}
+                        className="p-1.5 rounded-lg text-destructive hover:bg-destructive/10 transition"
+                      >
+                        <span className="material-symbols-rounded text-[18px]">delete</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop: Table layout */}
+              <div className="hidden sm:block overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-muted/40 border-b border-border/60">
                   <tr>
@@ -236,10 +271,11 @@ export function AdminDashboard({
                   ))}
                 </tbody>
               </table>
-            </div>
+              </div>
+            </>
           ) : (
-            <div className="px-6 py-12 text-center text-muted-foreground">
-              <p>No programs found.</p>
+            <div className="px-4 sm:px-6 py-8 sm:py-12 text-center text-muted-foreground">
+              <p className="text-sm">No programs found.</p>
             </div>
           )}
         </div>

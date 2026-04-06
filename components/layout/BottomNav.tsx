@@ -27,15 +27,18 @@ export function BottomNav({ activeTab, onTabChange, currentUser, onProfileClick 
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-6 pb-safe flex justify-center pointer-events-none">
-      <div className="pointer-events-auto relative bg-card/80 border border-border/60 backdrop-blur-xl shadow-2xl rounded-[28px] px-2 py-2 flex items-center gap-2">
+    <div className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-2 pt-1 flex justify-center pointer-events-none">
+      <div className="pointer-events-auto relative bg-card/85 border border-border/60 backdrop-blur-xl shadow-2xl rounded-2xl px-1.5 py-1.5 flex items-center gap-0.5">
         {appNavItems.map((item) => {
           const isActive = activeTab === item.id;
           return (
             <button
               key={item.id}
               onClick={() => onTabChange(item.id)}
-              className="relative flex items-center rounded-full px-3 py-2 transition-all duration-300"
+              className="relative flex items-center rounded-full px-2 py-1.5 transition-all duration-300"
+              aria-label={item.label}
+              role="tab"
+              aria-selected={isActive}
             >
               {isActive && (
                 <motion.span
@@ -45,11 +48,11 @@ export function BottomNav({ activeTab, onTabChange, currentUser, onProfileClick 
                 />
               )}
               <span
-                className={`relative z-10 w-11 h-11 rounded-full flex items-center justify-center transition-colors duration-300 ${
-                  isActive ? 'bg-primary text-primary-foreground' : 'bg-muted/50 text-muted-foreground'
+                className={`relative z-10 w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 ${
+                  isActive ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
                 }`}
               >
-                <span className="material-symbols-rounded text-[22px]">{item.icon}</span>
+                <span className="material-symbols-rounded text-[20px]">{item.icon}</span>
               </span>
               <AnimatePresence>
                 {isActive && (
@@ -57,7 +60,7 @@ export function BottomNav({ activeTab, onTabChange, currentUser, onProfileClick 
                     initial={{ opacity: 0, width: 0 }}
                     animate={{ opacity: 1, width: 'auto' }}
                     exit={{ opacity: 0, width: 0 }}
-                    className="relative z-10 ml-2 overflow-hidden text-sm font-semibold text-foreground whitespace-nowrap"
+                    className="relative z-10 ml-1.5 overflow-hidden text-xs font-semibold text-foreground whitespace-nowrap"
                   >
                     {item.label}
                   </motion.span>
@@ -67,11 +70,14 @@ export function BottomNav({ activeTab, onTabChange, currentUser, onProfileClick 
           );
         })}
 
-        <div className="w-px h-8 bg-border/60 mx-1 rounded-full"></div>
+        <div className="w-px h-6 bg-border/40 mx-0.5 rounded-full"></div>
 
         <button
           onClick={handleProfileClick}
-          className="relative flex items-center rounded-full px-3 py-2 transition-all duration-300"
+          className="relative flex items-center rounded-full px-2 py-1.5 transition-all duration-300"
+          aria-label={currentUser ? 'Profile' : 'Sign In'}
+          role="tab"
+          aria-selected={activeTab === 'profile'}
         >
           {activeTab === 'profile' && (
             <motion.span
@@ -81,16 +87,16 @@ export function BottomNav({ activeTab, onTabChange, currentUser, onProfileClick 
             />
           )}
           <span
-            className={`relative z-10 w-11 h-11 rounded-full flex items-center justify-center transition-colors duration-300 ${
-              activeTab === 'profile' ? 'bg-primary text-primary-foreground' : 'bg-muted/50 text-muted-foreground'
+            className={`relative z-10 w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-300 ${
+              activeTab === 'profile' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground'
             }`}
           >
             {currentUser && activeTab !== 'profile' ? (
-              <span className="font-semibold text-[16px]">
+              <span className="font-semibold text-[13px]">
                 {currentUser.name.charAt(0).toUpperCase()}
               </span>
             ) : (
-              <span className="material-symbols-rounded text-[22px]">person</span>
+              <span className="material-symbols-rounded text-[20px]">person</span>
             )}
           </span>
           <AnimatePresence>
@@ -99,7 +105,7 @@ export function BottomNav({ activeTab, onTabChange, currentUser, onProfileClick 
                 initial={{ opacity: 0, width: 0 }}
                 animate={{ opacity: 1, width: 'auto' }}
                 exit={{ opacity: 0, width: 0 }}
-                className="relative z-10 ml-2 overflow-hidden text-sm font-semibold text-foreground whitespace-nowrap"
+                className="relative z-10 ml-1.5 overflow-hidden text-xs font-semibold text-foreground whitespace-nowrap"
               >
                 {currentUser ? 'Profile' : 'Sign In'}
               </motion.span>

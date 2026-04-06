@@ -69,40 +69,45 @@ export function CalendarView({
   };
 
   return (
-    <div className="glass-panel rounded-3xl p-6">
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <div className="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-6">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-3 mb-4 sm:mb-6">
         <div>
-          <h2 className="text-2xl font-semibold text-foreground">Calendar</h2>
-          <p className="text-sm text-muted-foreground">Stay in sync with weekly programs.</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={prevMonth}
-            className="w-10 h-10 rounded-full border border-border/60 bg-card/60 text-foreground hover:bg-muted/50 transition"
-            aria-label="Previous month"
-          >
-            <span className="material-symbols-rounded">chevron_left</span>
-          </button>
-          <span className="w-36 text-center font-semibold text-foreground">{monthName}</span>
-          <button
-            onClick={nextMonth}
-            className="w-10 h-10 rounded-full border border-border/60 bg-card/60 text-foreground hover:bg-muted/50 transition"
-            aria-label="Next month"
-          >
-            <span className="material-symbols-rounded">chevron_right</span>
-          </button>
+          <h2 className="text-xl sm:text-2xl font-semibold text-foreground">Calendar</h2>
+          <p className="text-xs sm:text-sm text-muted-foreground">Stay in sync with weekly programs.</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-2 mb-2">
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div key={day} className="h-10 flex items-center justify-center font-semibold text-muted-foreground text-xs">
+      {/* Month Navigation */}
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <button
+          onClick={prevMonth}
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-border/60 bg-card/60 text-foreground hover:bg-muted/50 transition flex items-center justify-center"
+          aria-label="Previous month"
+        >
+          <span className="material-symbols-rounded text-[18px] sm:text-[22px]">chevron_left</span>
+        </button>
+        <span className="font-semibold text-sm sm:text-base text-foreground">{monthName}</span>
+        <button
+          onClick={nextMonth}
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-border/60 bg-card/60 text-foreground hover:bg-muted/50 transition flex items-center justify-center"
+          aria-label="Next month"
+        >
+          <span className="material-symbols-rounded text-[18px] sm:text-[22px]">chevron_right</span>
+        </button>
+      </div>
+
+      {/* Day Headers */}
+      <div className="grid grid-cols-7 gap-1 mb-1">
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
+          <div key={i} className="h-7 sm:h-10 flex items-center justify-center font-semibold text-muted-foreground text-[11px] sm:text-xs">
             {day}
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-2">
+      {/* Calendar Grid */}
+      <div className="grid grid-cols-7 gap-1">
         {days.map((day, idx) => {
           const dayPrograms = getProgramsForDay(day);
           const isToday =
@@ -114,35 +119,30 @@ export function CalendarView({
           return (
             <div
               key={idx}
-              className={`min-h-24 p-2 rounded-xl border transition ${
+              className={`min-h-10 sm:min-h-16 p-1 sm:p-1.5 rounded-lg sm:rounded-xl border transition ${
                 day
-                  ? `border-border/60 hover:border-primary/40 ${
-                      isToday ? 'bg-primary/10 border-primary/40' : 'bg-card/60 hover:bg-muted/40'
+                  ? `border-border/40 ${
+                      isToday ? 'bg-primary/10 border-primary/40' : 'bg-card/40'
                     }`
-                  : 'bg-muted/20 border-transparent'
+                  : 'border-transparent'
               }`}
             >
               {day && (
                 <>
-                  <div className={`font-semibold text-xs mb-1 ${isToday ? 'text-primary' : 'text-foreground'}`}>
+                  <div className={`font-semibold text-[11px] sm:text-xs text-center ${isToday ? 'text-primary' : 'text-foreground'}`}>
                     {day}
                   </div>
                   {dayPrograms.length > 0 && (
-                    <div className="space-y-1">
-                      {dayPrograms.slice(0, 2).map((prog) => (
+                    <div className="mt-0.5 space-y-0.5">
+                      {dayPrograms.slice(0, 1).map((prog) => (
                         <div
                           key={prog.id}
-                          className="text-[11px] bg-secondary/15 text-foreground px-1.5 py-0.5 rounded-md truncate flex items-center gap-1"
+                          className="w-full h-1 sm:h-1.5 bg-secondary/40 rounded-full"
                           title={prog.title}
-                        >
-                          <ProgramIcon icon={prog.icon} className="text-xs" />
-                          {prog.title}
-                        </div>
+                        />
                       ))}
-                      {dayPrograms.length > 2 && (
-                        <div className="text-[11px] text-muted-foreground px-1">
-                          +{dayPrograms.length - 2} more
-                        </div>
+                      {dayPrograms.length > 1 && (
+                        <div className="w-full h-1 sm:h-1.5 bg-primary/30 rounded-full" />
                       )}
                     </div>
                   )}
@@ -153,21 +153,22 @@ export function CalendarView({
         })}
       </div>
 
-      <div className="mt-6 pt-6 border-t border-border/60">
-        <h3 className="font-semibold text-foreground mb-3">Recurring Weekly Events</h3>
+      {/* Recurring Events */}
+      <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-border/60">
+        <h3 className="font-semibold text-sm sm:text-base text-foreground mb-2 sm:mb-3">Recurring Weekly Events</h3>
         <div className="space-y-2">
           {weeklyPrograms.map((prog) => (
             <div
               key={prog.id}
-              className="flex flex-wrap items-center justify-between gap-4 p-3 bg-card/60 rounded-2xl border border-border/60 hover:bg-muted/40 transition"
+              className="flex items-center justify-between gap-3 p-2.5 sm:p-3 bg-card/60 rounded-xl sm:rounded-2xl border border-border/60"
             >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center">
-                  <ProgramIcon icon={prog.icon} className="text-lg text-primary" />
+              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                  <ProgramIcon icon={prog.icon} className="text-base sm:text-lg text-primary" />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-foreground truncate">{prog.title}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="font-semibold text-sm text-foreground truncate">{prog.title}</p>
+                  <p className="text-xs text-muted-foreground">
                     {prog.day} at {prog.time}
                   </p>
                 </div>
@@ -175,10 +176,10 @@ export function CalendarView({
               {currentUser && onToggleRegistration && (
                 <button
                   onClick={() => onToggleRegistration(prog.id)}
-                  className={`px-3 py-1.5 text-sm rounded-lg transition flex-shrink-0 border ${
+                  className={`px-2.5 py-1 text-xs sm:text-sm rounded-lg transition flex-shrink-0 border ${
                     registeredProgramIds.includes(prog.id)
-                      ? 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/20'
-                      : 'bg-card/60 text-foreground border-border/60 hover:bg-muted/40'
+                      ? 'bg-primary/10 text-primary border-primary/30'
+                      : 'bg-card/60 text-foreground border-border/60'
                   }`}
                 >
                   {registeredProgramIds.includes(prog.id) ? 'Registered' : 'Register'}
